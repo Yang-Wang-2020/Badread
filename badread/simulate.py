@@ -228,11 +228,9 @@ def get_real_fragment(fragment_length, ref_seqs, rev_comp_ref_seqs,
         return seq, info
 
     # If the reference contig is circular and the fragment length is too long, then we just
-    # set the fragment length to the (0.8-1)*reference length. (Updated in this fork!)
+    # set the fragment length to the int((0.8-1)*reference) length. (Updated in this fork only!)
     if fragment_length > len(seq) and ref_circular[contig]:
-        print(fragment_length)
-        fragment_length = len(seq) * random.uniform(0.8, 1)
-        print(fragment_length)
+        fragment_length = int(len(seq) * random.uniform(0.8, 1))
 
     start_pos = random.randint(0, len(seq) - 1)
     end_pos = start_pos + fragment_length
@@ -246,7 +244,7 @@ def get_real_fragment(fragment_length, ref_seqs, rev_comp_ref_seqs,
         else:
             looped_end_pos = end_pos - len(seq)
             assert looped_end_pos > 0
-        return seq[start_pos:] + seq[:looped_end_pos], info
+            return seq[start_pos:] + seq[:looped_end_pos], info
 
     # For linear contigs, we don't care if the ending position is off the end - that will just
     # result in the read ending at the sequence end (and being shorter than the fragment
