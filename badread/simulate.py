@@ -179,6 +179,7 @@ def get_fragment(frag_lengths, ref_seqs, rev_comp_ref_seqs, ref_contigs,
 
     # The get_real_fragment function can return nothing (due to --small_plasmid_bias) so we try
     # repeatedly until we get a result.
+
     for _ in range(1000):
         seq, info = get_real_fragment(fragment_length, ref_seqs,
                                       rev_comp_ref_seqs, ref_contigs,
@@ -227,9 +228,11 @@ def get_real_fragment(fragment_length, ref_seqs, rev_comp_ref_seqs,
         return seq, info
 
     # If the reference contig is circular and the fragment length is too long, then we just
-    # adjust the fragment length to the (0.8-1)*reference length. (Updated in this fork!)
+    # set the fragment length to the (0.8-1)*reference length. (Updated in this fork!)
     if fragment_length > len(seq) and ref_circular[contig]:
+        print(fragment_length)
         fragment_length = len(seq) * random.uniform(0.8, 1)
+        print(fragment_length)
 
     start_pos = random.randint(0, len(seq) - 1)
     end_pos = start_pos + fragment_length
